@@ -7,14 +7,31 @@ Program: `whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc`
 Variants captured: `swap`, `swapV2`, `twoHopSwap`, `twoHopSwapV2`
 (two-hop swaps emit one line per pool).
 
-## Run (one command)
+## Use it from a fresh clone
 
-1. Put your gRPC endpoint + x-token in `Vixen.toml` (this folder).
-2. From the repo root:
+**Prerequisites**
+- Rust via [rustup](https://rustup.rs) — the pinned toolchain (`rust-toolchain.toml`,
+  1.90) installs automatically on first build. A C toolchain (`cc`) is needed
+  for `aws-lc-rs`; it's present on most systems.
+- A Yellowstone gRPC (Dragon's Mouth) endpoint + token — Triton/rpcpool, Helius,
+  QuickNode, or self-hosted. Not a plain JSON-RPC URL.
+
+**Steps**
 
 ```bash
-RUST_LOG=info cargo run -p orca-swaps
+git clone https://github.com/czaacza/yellowstone-vixen.git
+cd yellowstone-vixen
+git checkout feat/orca-swaps-example        # until it's merged to main
+
+cp examples/orca-swaps/Vixen.example.toml examples/orca-swaps/Vixen.toml
+$EDITOR examples/orca-swaps/Vixen.toml       # set endpoint + x-token
+
+RUST_LOG=info cargo run -p orca-swaps        # first build pulls the Solana stack — takes a few min
 ```
+
+`cargo run` reads `examples/orca-swaps/Vixen.toml` by default (override with
+`--config <path>`). Save the stream to a file with `> swaps.jsonl` (JSON goes to
+stdout, logs to stderr).
 
 Each swap prints as JSON:
 

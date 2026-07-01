@@ -1,0 +1,22 @@
+# Template config for the `orca-swaps` example.
+#
+#   cp Vixen.example.toml Vixen.toml   # then edit the two values below
+#
+# `Vixen.toml` is gitignored so your token never gets committed.
+# You need a Yellowstone gRPC (Dragon's Mouth) endpoint — any provider works:
+# Triton/rpcpool, Helius, QuickNode, or a self-hosted yellowstone-grpc.
+# This MUST be a Geyser gRPC endpoint, not a plain JSON-RPC URL.
+
+[source]
+# Your gRPC endpoint. Helius dedicated nodes use port 2053, e.g.
+# "https://<your-node>-lb.helius-rpc.com:2053"
+endpoint = "https://index.rpcpool.com"
+
+# Your auth token. For Helius this is the gRPC token (a UUID).
+# Delete this line entirely if your endpoint needs no auth.
+x-token = "<X-TOKEN>"
+
+timeout = 60
+
+# Auto-reconnect with backoff + slot-resume is on by default; leave it.
+#auto-reconnect = true
