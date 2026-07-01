@@ -5,3 +5,4 @@ crates/mock/fixtures
 **/.DS_Store
 .cargo/
 Vixen.toml
+*.jsonl

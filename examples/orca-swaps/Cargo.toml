@@ -1,0 +1,40 @@
+[package]
+name = "orca-swaps"
+description = "Collect every Orca Whirlpool swap (in/out mint, amounts, decimals, pool, slot) from a Yellowstone gRPC stream"
+publish = false
+edition.workspace = true
+license = "MIT"
+repository = "https://github.com/rpcpool/yellowstone-vixen"
+
+[[bin]]
+name = "orca-swaps"
+path = "src/main.rs"
+
+[dependencies]
+clap = { workspace = true, features = ["derive", "cargo", "wrap_help"] }
+toml = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+rustls = { workspace = true }
+borsh = { workspace = true, features = ["derive"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+
+yellowstone-vixen = { workspace = true }
+yellowstone-vixen-core = { workspace = true, features = ["proto"] }
+yellowstone-vixen-parser = { workspace = true }
+yellowstone-vixen-proc-macro = { workspace = true }
+yellowstone-vixen-yellowstone-grpc-source = { workspace = true }
+
+# Referenced by the generated parser expansion (mirrors examples/idl-parser).
+prost = { workspace = true }
+prost-types = { workspace = true }
+
+[features]
+# proto-on so the generated `Instructions` derives `prost::Message`, matching
+# the `Parser::Output: prost::Message` bound that `core`'s proto feature adds.
+default = ["proto"]
+proto = ["yellowstone-vixen-proc-macro/proto"]
+# Named only so the generated parser's `#[cfg(feature = "serde")]` is a known
+# cfg (off). We use serde directly for JSON output, not on generated types.
+serde = []
